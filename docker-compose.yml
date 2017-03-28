@@ -1,7 +1,8 @@
 version: '2'
 services:
   backend:
-    image: mhart/alpine-node:7.5.0
+    build:
+      context: ./backend
     container_name: backend
     command: ["npm", "run", "devdockerstart"]
     working_dir: '/backend'

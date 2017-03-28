@@ -19,8 +19,7 @@ router.post('/user', (req, res) => {
   const password = req.body.password;
   const admin = req.body.admin;
 
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(password, salt);
+  const hash = bcrypt.hashSync(password, 10);
 
   req.getValidationResult()
     .then(Utils.checkValidations)

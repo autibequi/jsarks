@@ -1,13 +1,30 @@
 // Modules
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Custom Modules
 const User = require('../database/user.js');
+const Config = require('../config.js');
 const Utils = require('../utils.js');
 
 // Setup
 const router = express.Router();
+
+// Get User
+router.get('/user', (req, res) => {
+  const JWTData = jwt.verify(Utils.getToken(req), Config.JWT_SECRET_KEY);
+
+  User.findOne({ username: JWTData.username }).exec()
+    .then((user) => {
+      if (!user.admin) {
+        return Promise.reject({ status: 401, error: 'Not Authorized' });
+      }
+      return User.find({});
+    })
+    .then(users => res.status(200).send(users))
+    .catch(err => res.status(err.status ? err.status : 500).send({ err }));
+});
 
 // Create user
 router.post('/user', (req, res) => {

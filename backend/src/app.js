@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 // Custom Modules
 const userRouter = require('./routers/user.js');
 const loginRouter = require('./routers/login.js');
+const bookmarkRouter = require('./routers/bookmark.js');
 const Config = require('./config.js');
 
 // JWT Setup
@@ -22,6 +23,7 @@ app.use(jwtMiddleware);
 // Routers
 app.use(userRouter);
 app.use(loginRouter);
+app.use(bookmarkRouter);
 
 // export app
 module.exports = app;

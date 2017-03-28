@@ -65,3 +65,24 @@ describe('PUT /bookmark', () => {
       });
   });
 });
+
+describe('DELETE /bookmark', () => {
+  const JWT = jwt.sign({ username: 'user' }, Config.JWT_SECRET_KEY);
+
+  it('Remove a Bookmark', () => {
+    const passwordHash = bcrypt.hashSync('user', 10);
+    return User.create({ username: 'user', password: passwordHash, admin: true })
+      .then(owner => Bookmark.create({ title: 'OldPage', url: 'http://old.com', owner }))
+      .then((oldpage) => {
+        return request(app)
+          .delete(`/bookmark/${oldpage._id}`)
+          .set('Authorization', `Bearer ${JWT}`)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .then(() => Bookmark.findById(oldpage._id))
+          .then((response) => {
+            assert.equal(response, null);
+          });
+      });
+  });
+});

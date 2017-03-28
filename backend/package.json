@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pm2 start src/server.js --watch --name jshort",
+    "dockerstart": "pm2-docker src/server.js --watch --name jshort",
+    "devdockerstart": "npm install; npm run dockerstart"
   },
   "author": "",
   "license": "ISC",
@@ -14,5 +16,9 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "pm2": "^2.4.2"
   }
 }

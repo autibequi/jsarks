@@ -1,15 +1,11 @@
+// Modules
 const mongoose = require('mongoose');
+const config = require('../config.js');
+
+// Set Bluebird as default promise library for mogoose
 mongoose.Promise = require('bluebird');
 
-// Set mongoURL
-let mongoUrl;
-if (process.env.MONGO_URL) {
-  mongoUrl = process.env.MONGO_URL;
-} else {
-  mongoUrl = 'localhost';
-}
-
 // Connects to Database
-mongoose.connect(`mongodb://${mongoUrl}/jshort`);
+mongoose.connect(`mongodb://${config.mongoUrl}/${config.mongoDatabase}`);
 
 module.exports = mongoose;

@@ -11,7 +11,24 @@ const Bookmark = require('../database/bookmark.js');
 // Setup
 const router = express.Router();
 
-// Create user
+// Create Bookmark
+router.get('/bookmark', (req, res) => {
+  const JWTData = jwt.verify(Utils.getToken(req), Config.JWT_SECRET_KEY);
+
+  req.getValidationResult()
+    .then(Utils.checkValidations)
+    .then(() => User.findOne({ username: JWTData.username }).exec())
+    .then((owner) => {
+      if (owner.admin) {
+        return Bookmark.find({});
+      }
+      return Bookmark.find({ owner });
+    })
+    .then(bookmarks => res.status(200).send(bookmarks))
+    .catch(err => res.status(err.status ? err.status : 500).send({ err }));
+});
+
+// Create Bookmark
 router.post('/bookmark', (req, res) => {
   req.checkBody('url', 'title', 'Must not be empty').notEmpty();
   req.checkBody('title', 'Must only contains lowercase alpha numeric').isAlpha();

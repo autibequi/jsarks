@@ -12,7 +12,8 @@ const Config = require('./config.js');
 
 // JWT Setup
 const jwtMiddleware = jwt({ secret: Config.JWT_SECRET_KEY })
-                        .unless({ path: ['/user', '/login'] });
+                        .unless({ path: ['/login',
+                                        { url: '/user', methods: ['POST'] }] });
 
 // Setup
 app.use(expressValidator());

@@ -14,4 +14,7 @@ if (process.env.NODE_ENV === 'test') {
   config.mongoDatabase = 'prod';
 }
 
+// JWT Configure Key
+config.JWT_SECRET_KEY = '6e11873b9d9d94a44058bef5747735ce';
+
 module.exports = config;

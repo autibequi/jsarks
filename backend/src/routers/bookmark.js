@@ -55,5 +55,24 @@ router.put('/bookmark/:id', (req, res) => {
     .catch(err => res.status(err.status ? err.status : 500).send({ err }));
 });
 
+// Update Bookmark
+router.delete('/bookmark/:id', (req, res) => {
+  const id = req.params.id;
+  const JWTData = jwt.verify(Utils.getToken(req), Config.JWT_SECRET_KEY);
+
+  req.getValidationResult()
+    .then(Utils.checkValidations)
+    .then(() => User.findOne({ username: JWTData.username }))
+    .then(owner => Bookmark.remove({ _id: id, owner }))
+    .then((bookmark) => {
+      if (!bookmark) {
+        return Promise.reject({ status: 404, error: 'Bookmark not found.', id });
+      }
+      return bookmark;
+    })
+    .then(bookmark => res.status(200).send({ title: bookmark.title, url: bookmark.url }))
+    .catch(err => res.status(err.status ? err.status : 500).send({ err }));
+});
+
 // Export Router
 module.exports = router;

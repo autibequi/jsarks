@@ -9,6 +9,7 @@ const app = require('../src/app.js');
 const bcrypt = require('bcrypt');
 const assert = require('assert');
 const User = require('../src/database/user.js');
+const Bookmark = require('../src/database/bookmark.js');
 const Config = require('../src/config.js');
 const jwt = require('jsonwebtoken');
 
@@ -40,5 +41,27 @@ describe('POST /bookmark', () => {
         assert.equal(response.body.url, 'http://google.com');
       });
     });
+  });
+});
+
+describe('PUT /bookmark', () => {
+  const JWT = jwt.sign({ username: 'user' }, Config.JWT_SECRET_KEY);
+
+  it('Modify a Bookmark', () => {
+    const passwordHash = bcrypt.hashSync('user', 10);
+    return User.create({ username: 'user', password: passwordHash, admin: true })
+      .then(owner => Bookmark.create({ title: 'OldPage', url: 'http://old.com', owner }))
+      .then((oldpage) => {
+        return request(app)
+          .put(`/bookmark/${oldpage._id}`)
+          .set('Authorization', `Bearer ${JWT}`)
+          .send({ title: 'NewPage', url: 'http://new.com' })
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .then((response) => {
+            assert.equal(response.body.title, 'NewPage');
+            assert.equal(response.body.url, 'http://new.com');
+          });
+      });
   });
 });

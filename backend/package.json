@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "mocha",
     "start": "pm2 start src/server.js --watch --name jshort",
     "dockerstart": "pm2-docker src/server.js --watch --name jshort",
     "devdockerstart": "npm install; npm run dockerstart"
@@ -20,7 +21,9 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "express": "^4.15.2",
+    "mocha": "^3.2.0",
     "mongoose": "^4.9.2",
-    "pm2": "^2.4.2"
+    "pm2": "^2.4.2",
+    "supertest": "^3.0.0"
   }
 }

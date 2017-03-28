@@ -16,6 +16,17 @@ services:
     volumes:
       - ./backend:/backend
 
+  frontend:
+    image: node:6.10.1-alpine
+    container_name: /frontend
+    command: ["tail", "-f", "/dev/null"]
+    # command: ["npm", "run", "devdockerstart"]
+    working_dir: '/frontend'
+    ports:
+      - 8000:8000
+    volumes:
+      - ./frontend:/frontend
+
   mongodb:
     image: mongo:3.0.14
     container_name: mongodb

@@ -1,5 +1,6 @@
 // Modules
 const express = require('express');
+const bcrypt = require('bcrypt');
 
 // Custom Modules
 const User = require('../database/user.js');
@@ -18,9 +19,12 @@ router.post('/user', (req, res) => {
   const password = req.body.password;
   const admin = req.body.admin;
 
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
   req.getValidationResult()
     .then(Utils.checkValidations)
-    .then(() => User.create({ username, password, admin }))
+    .then(() => User.create({ username, password: hash, admin }))
     .catch((err) => {
       if (err.code === 11000) {
         return Promise.reject({ status: 409, error: 'User Already Exists', username });

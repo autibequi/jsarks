@@ -1,5 +1,6 @@
-// Modules
-const app = require('express')();
+const app = require('./app');
 
-// Listen Port
-app.listen(3000);
+// Server
+app.listen(3000, () => {
+  console.log('Express Server Listen on 3000!');
+});

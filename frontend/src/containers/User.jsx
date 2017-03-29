@@ -1,47 +1,58 @@
 /* global document */
 // Libs
 import React from 'react';
-import { Table, Form, Col, FormControl, ControlLabel, FormGroup, Button } from 'react-bootstrap';
+import { Panel, Alert, Table, Button } from 'react-bootstrap';
 import ApiService from '../modules/API.jsx';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.addBookmark = this.deleteUser.bind(this);
-  }
-
   getInitialState() {
+    this.deleteUser = this.deleteUser.bind(this);
+    this.loadUsers = this.loadUsers.bind(this);
     return {
       users: [],
+      showAlert: false,
+      alertLevel: 'success',
+      alertMessage: '',
     };
   }
 
   componentDidMount() {
+    this.loadUsers();
+  }
+
+  loadUsers() {
     ApiService.GetUser()
-    .then((data) => {
-      let users = [];
-      if (data.data.length > 0) {
-        users = data.data;
-      }
-      this.setState({
-        users,
+      .then((data) => {
+        let users = [];
+        if (data.data.length > 0) {
+          users = data.data;
+        }
+        this.setState({
+          users,
+        });
       });
-    });
   }
 
   deleteUser(e) {
+    const that = this;
     ApiService.DeleteUser(e.target.value)
-      .then((response) => {
-        debugger;
+      .then(() => {
+        that.loadUsers();
+        that.setState({ alertLevel: 'success', showAlert: false, alertMessage: 'Correct Password, Loging in.' });
       })
-      .catch((a) => {
-        debugger;
+      .catch(() => {
+        that.setState({ alertLevel: 'warning', showAlert: true, alertMessage: 'Wrong User/Password' });
       });
   }
 
   render() {
     return (
       <div>
+        <Panel collapsible expanded={this.state.showAlert} bsClass="nothing">
+          <Alert bsStyle={this.state.alertLevel}>
+            {this.state.alertMessage}
+          </Alert>
+        </Panel>
         <Table responsive>
           <thead>
             <tr>

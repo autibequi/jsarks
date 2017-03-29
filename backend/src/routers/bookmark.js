@@ -47,7 +47,7 @@ router.post('/bookmark', (req, res) => {
 });
 
 // Update Bookmark
-router.put('/bookmark/:id', (req, res) => {
+router.put('/bookmark/:id?', (req, res) => {
   req.checkBody('url', 'title', 'Must not be empty').notEmpty();
   req.checkBody('title', 'Must only contains lowercase alpha numeric').isAlpha();
   req.checkBody('url', 'Must only contains lowercase alpha numeric').isURL();
@@ -73,7 +73,7 @@ router.put('/bookmark/:id', (req, res) => {
 });
 
 // Update Bookmark
-router.delete('/bookmark/:id', (req, res) => {
+router.delete('/bookmark/:id?', (req, res) => {
   const id = req.params.id;
   const JWTData = jwt.verify(Utils.getToken(req), Config.JWT_SECRET_KEY);
 

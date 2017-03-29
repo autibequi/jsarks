@@ -15,7 +15,7 @@ const routes = {
         if (Auth.isUserAuthenticated()) {
           callback(null, HomePage);
         } else {
-          callback(null, SignUpPage);
+          callback(null, LoginPage);
         }
       },
     },
@@ -44,7 +44,7 @@ const routes = {
       path: '/logout',
       onEnter: (nextState, replace) => {
         Auth.deauthenticateUser();
-        replace('/');
+        replace('/login');
       },
     },
   ],

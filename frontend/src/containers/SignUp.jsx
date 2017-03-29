@@ -44,7 +44,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Panel collapsible expanded={this.state.showAlert} bsClass>
+        <Panel collapsible expanded={this.state.showAlert} bsClass="nothing">
           <Alert bsStyle={this.state.alertLevel}>
             {this.state.alertMessage}
           </Alert>

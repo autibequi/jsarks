@@ -1,37 +1,40 @@
 /* global document */
 // Libs
 import React from 'react';
-import { Table, Form, Col, FormControl, ControlLabel, FormGroup, Button } from 'react-bootstrap';
+import { Panel, Alert, Table, Form, Col, FormControl, ControlLabel, FormGroup, Button } from 'react-bootstrap';
 import ApiService from '../modules/API.jsx';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  getInitialState() {
     this.handleChange = this.handleChange.bind(this);
     this.addBookmark = this.addBookmark.bind(this);
-  }
-
-  getInitialState() {
+    this.updateBookmarks = this.updateBookmarks.bind(this);
+    this.deleteBookmark = this.deleteBookmark.bind(this);
     return {
       bookmarks: [],
       title: '',
       url: '',
+      showAlert: false,
+      alertLevel: 'success',
+      alertMessage: '',
     };
   }
 
   componentDidMount() {
+    this.updateBookmarks();
+  }
+
+  updateBookmarks() {
     ApiService.GetBookmarks()
-    .then((data) => {
-      let bookmarks = [];
-      if (data.data.length > 0) {
-        bookmarks = data.data;
-      }
-      this.setState({
-        bookmarks,
-        title: '',
-        url: '',
+      .then((data) => {
+        let bookmarks = [];
+        if (data.data.length > 0) {
+          bookmarks = data.data;
+        }
+        this.setState({
+          bookmarks,
+        });
       });
-    });
   }
 
   handleChange(e) {
@@ -45,29 +48,37 @@ class App extends React.Component {
       title: this.state.title,
       url: this.state.url,
     };
-
+    const that = this;
     ApiService.AddBookmark(form)
-      .then((response) => {
-        debugger;
+      .then(() => {
+        that.updateBookmarks();
+        that.setState({ alertLevel: 'success', showAlert: true, alertMessage: 'Bookmark correctly added.' });
       })
-      .catch((a) => {
-        debugger;
+      .catch(() => {
+        that.setState({ alertLevel: 'warning', showAlert: true, alertMessage: 'Bad Url.' });
       });
   }
 
   deleteBookmark(e) {
+    const that = this;
     ApiService.DeleteBookmark(e.target.value)
-      .then((response) => {
-        debugger;
+      .then(() => {
+        that.updateBookmarks();
+        that.setState({ alertLevel: 'success', showAlert: true, alertMessage: 'Bookmark correctly deleted.' });
       })
-      .catch((a) => {
-        debugger;
+      .catch(() => {
+        that.setState({ alertLevel: 'warning', showAlert: true, alertMessage: 'Something Went Wrong. Reload this page.' });
       });
   }
 
   render() {
     return (
       <div>
+        <Panel collapsible expanded={this.state.showAlert} bsClass="nothing">
+          <Alert bsStyle={this.state.alertLevel}>
+            {this.state.alertMessage}
+          </Alert>
+        </Panel>
         <Form horizontal>
           <FormGroup controlId="formHorizontalEmail">
             <Col componentClass={ControlLabel} sm={2}>

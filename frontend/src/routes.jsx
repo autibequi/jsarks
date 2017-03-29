@@ -21,6 +21,11 @@ const routes = {
     },
 
     {
+      path: '/bookmarks',
+      component: HomePage,
+    },
+
+    {
       path: '/login',
       component: LoginPage,
     },

@@ -2,6 +2,8 @@
 // Libs
 import React from 'react';
 import { render } from 'react-dom';
+import { browserHistory, Router } from 'react-router';
+import routes from './routes.jsx';
 
 class App extends React.Component {
   getInitialState() {
@@ -13,7 +15,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        ITS WORKING
+        <Router history={browserHistory} routes={routes} />
       </div>
     );
   }

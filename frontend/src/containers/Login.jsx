@@ -13,7 +13,7 @@ class App extends React.Component {
       email: '',
       password: '',
       showAlert: false,
-      alertLevel: '',
+      alertLevel: 'success',
       alertMessage: '',
     };
   }

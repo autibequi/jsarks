@@ -1,12 +1,13 @@
 /* global document */
 // Libs
 import React from 'react';
-import { Panel, Alert, Form, Button, FormGroup, FormControl, Col, ControlLabel } from 'react-bootstrap';
+import { Checkbox, Panel, Alert, Form, Button, FormGroup, FormControl, Col, ControlLabel } from 'react-bootstrap';
 import ApiService from '../modules/API.jsx';
 
 class App extends React.Component {
   getInitialState() {
     this.handleChange = this.handleChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.signup = this.signup.bind(this);
     return {
       email: '',
@@ -14,6 +15,7 @@ class App extends React.Component {
       showAlert: false,
       alertLevel: 'success',
       alertMessage: '',
+      isAdmin: false,
     };
   }
 
@@ -23,13 +25,19 @@ class App extends React.Component {
     this.setState(dict);
   }
 
+  handleCheckboxChange(e) {
+    const dict = {};
+    dict[e.target.name] = e.target.checked;
+    this.setState(dict);
+  }
+
   signup(e) {
     e.preventDefault();
 
     const form = {
       username: this.state.email,
       password: this.state.password,
-      admin: true,
+      admin: this.state.isAdmin,
     };
     const that = this;
     ApiService.SignUp(form)
@@ -82,6 +90,15 @@ class App extends React.Component {
               />
             </Col>
           </FormGroup>
+
+          <Col smOffset={2} sm={10}>
+            <Checkbox name="isAdmin" onChange={this.handleCheckboxChange} checked={this.state.isAdmin}>
+              Create User as Administator.
+            </Checkbox>
+          </Col>
+
+          <br />
+          <br />
 
           <FormGroup>
             <Col smOffset={2} sm={10}>

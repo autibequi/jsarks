@@ -3,6 +3,28 @@ import { Link, IndexLink } from 'react-router';
 import Auth from '../modules/Auth.jsx';
 import { Grid, Navbar, Nav, NavItem } from 'react-bootstrap';
 
+const NavItems = () => {
+  if (Auth.isAdmin() === 'true') {
+    return (
+      <Nav>
+        <NavItem><Link to="/">Bookmarks</Link></NavItem>
+        <NavItem><Link to="/user">Users</Link></NavItem>
+        <NavItem><Link to="/logout">Logout</Link></NavItem>
+      </Nav>);
+  } else if (Auth.isUserAuthenticated()) {
+    return (
+      <Nav>
+        <NavItem><Link to="/">Bookmarks</Link></NavItem>
+        <NavItem><Link to="/logout">Logout</Link></NavItem>
+      </Nav>);
+  }
+  return (
+    <Nav>
+      <NavItem><Link to="/login">Login</Link></NavItem>
+      <NavItem><Link to="/signup">SignUp</Link></NavItem>
+    </Nav>);
+};
+
 const Base = ({ children }) => (
   <div>
     <Navbar>
@@ -11,18 +33,7 @@ const Base = ({ children }) => (
           <IndexLink to="/">JSMarks</IndexLink>
         </Navbar.Brand>
       </Navbar.Header>
-      {Auth.isUserAuthenticated() ? (
-        <Nav>
-          <NavItem><Link to="/">Bookmarks</Link></NavItem>
-          <NavItem><Link to="/user">Users</Link></NavItem>
-          <NavItem><Link to="/logout">Logout</Link></NavItem>
-        </Nav>
-      ) : (
-        <Nav>
-          <NavItem><Link to="/login">Login</Link></NavItem>
-          <NavItem><Link to="/signup">SignUp</Link></NavItem>
-        </Nav>
-      )}
+      {NavItems()}
     </Navbar>
     <Grid>
       {children}

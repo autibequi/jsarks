@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 // Custom Modules
 const User = require('../database/user.js');
+const Bookmark = require('../database/bookmark.js');
 const Config = require('../config.js');
 const Utils = require('../utils.js');
 
@@ -38,6 +39,24 @@ router.delete('/user/:id?', (req, res) => {
       }
       return User.remove({ _id: id });
     })
+    .then(users => res.status(200).send(users))
+    .catch(err => console.log(err))
+    .catch(err => res.status(err.status ? err.status : 500).send({ err }));
+});
+
+// Get User bookmarks
+router.get('/user/:id/bookmarks', (req, res) => {
+  const JWTData = jwt.verify(Utils.getToken(req), Config.JWT_SECRET_KEY);
+  const id = req.params.id;
+
+  User.findOne({ username: JWTData.username }).exec()
+    .then((user) => {
+      if (!user.admin) {
+        return Promise.reject({ status: 401, error: 'Not Authorized' });
+      }
+      return User.findById(id);
+    })
+    .then(owner => Bookmark.find({ owner }))
     .then(users => res.status(200).send(users))
     .catch(err => console.log(err))
     .catch(err => res.status(err.status ? err.status : 500).send({ err }));

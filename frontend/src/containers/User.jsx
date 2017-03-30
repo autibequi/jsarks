@@ -2,6 +2,7 @@
 // Libs
 import React from 'react';
 import { Panel, Alert, Table, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 import ApiService from '../modules/API.jsx';
 
 class App extends React.Component {
@@ -63,7 +64,7 @@ class App extends React.Component {
           <tbody>
             {this.state.users.map(user => (
               <tr>
-                <td>{user.username}</td>
+                <td><Link to={"/user/" + user._id + "/bookmarks"}>{user.username}</Link></td>
                 <td><Button value={user._id} onClick={this.deleteUser}>Delete</Button></td>
               </tr>
             ))}

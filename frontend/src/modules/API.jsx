@@ -14,6 +14,11 @@ export default {
     const headers = { headers: { Authorization: `Bearer ${token}` } };
     return axios.get(URL.resolve(ENV.API_ENDPOINT, 'bookmark'), headers);
   },
+  GetUserBookmarks: (id) => {
+    const token = Auth.getToken();
+    const headers = { headers: { Authorization: `Bearer ${token}` } };
+    return axios.get(URL.resolve(ENV.API_ENDPOINT, `user/${id}/bookmarks`), headers);
+  },
   AddBookmark: (formData) => {
     const token = Auth.getToken();
     const headers = { headers: { Authorization: `Bearer ${token}` } };

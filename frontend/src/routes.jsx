@@ -1,6 +1,7 @@
 import Base from './containers/Base.jsx';
 import LoginPage from './containers/Login.jsx';
 import HomePage from './containers/Home.jsx';
+import UserBookmarks from './containers/UserBookmarks.jsx';
 import SignUpPage from './containers/SignUp.jsx';
 import Auth from './modules/Auth.jsx';
 import UserPage from './containers/User.jsx';
@@ -23,6 +24,11 @@ const routes = {
     {
       path: '/bookmarks',
       component: HomePage,
+    },
+
+    {
+      path: '/user/:id/bookmarks',
+      component: UserBookmarks,
     },
 
     {

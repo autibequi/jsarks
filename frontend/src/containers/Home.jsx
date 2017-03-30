@@ -55,7 +55,7 @@ class App extends React.Component {
         that.setState({ alertLevel: 'success', showAlert: true, alertMessage: 'Bookmark correctly added.' });
       })
       .catch(() => {
-        that.setState({ alertLevel: 'warning', showAlert: true, alertMessage: 'Bad Url.' });
+        that.setState({ alertLevel: 'warning', showAlert: true, alertMessage: 'Please insert a valid URL and a Alphanumeric Title.' });
       });
   }
 
@@ -124,7 +124,7 @@ class App extends React.Component {
             <tr>
               <th>URL</th>
               <th>LINK</th>
-              <th>Delete</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -132,7 +132,11 @@ class App extends React.Component {
               <tr>
                 <td>{bookmark.title}</td>
                 <td>{bookmark.url}</td>
-                <td><Button value={bookmark._id} onClick={this.deleteBookmark}>Deletar</Button></td>
+                <td>
+                  <Button value={bookmark._id} onClick={this.deleteBookmark} bsStyle="danger">
+                    Delete
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>

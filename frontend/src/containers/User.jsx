@@ -58,14 +58,18 @@ class App extends React.Component {
           <thead>
             <tr>
               <th>Username</th>
-              <th>Delete</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {this.state.users.map(user => (
               <tr>
                 <td><Link to={"/user/" + user._id + "/bookmarks"}>{user.username}</Link></td>
-                <td><Button value={user._id} onClick={this.deleteUser}>Delete</Button></td>
+                <td>
+                  <Button value={user._id} onClick={this.deleteUser} bsStyle="danger">
+                  Delete
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>

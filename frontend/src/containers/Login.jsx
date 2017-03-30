@@ -36,7 +36,7 @@ class App extends React.Component {
     const that = this;
     ApiService.Login(form)
       .then((response) => {
-        Auth.authenticateUser(response.data.token);
+        Auth.authenticateUser(response.data);
         this.context.router.push('/bookmarks');
         that.setState({ alertLevel: 'success', showAlert: false, alertMessage: 'Correct Password, Loging in.' });
       })

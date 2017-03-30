@@ -21,7 +21,7 @@ router.get('/user', (req, res) => {
       if (!user.admin) {
         return Promise.reject({ status: 401, error: 'Not Authorized' });
       }
-      return User.find({});
+      return User.find({ username: { $ne: JWTData.username } });
     })
     .then(users => res.status(200).send(users))
     .catch(err => res.status(err.status ? err.status : 500).send({ err }));

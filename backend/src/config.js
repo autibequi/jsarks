@@ -17,4 +17,7 @@ if (process.env.NODE_ENV === 'test') {
 // JWT Configure Key
 config.JWT_SECRET_KEY = '6e11873b9d9d94a44058bef5747735ce';
 
+// Allowed Title Chars
+config.allowedChars = /^[a-z0-9- ]+$/i;
+
 module.exports = config;

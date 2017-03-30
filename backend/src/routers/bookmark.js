@@ -26,7 +26,7 @@ router.get('/bookmark', (req, res) => {
 // Create Bookmark
 router.post('/bookmark', (req, res) => {
   req.checkBody('url', 'title', 'Must not be empty').notEmpty();
-  req.checkBody('title', 'Must only contains lowercase alpha numeric').isAlpha();
+  req.checkBody('title', 'Must only contains lowercase alpha numeric').matches(Config.allowedChars);
   req.checkBody('url', 'Must only contains lowercase alpha numeric').isURL();
 
   const title = req.body.title;

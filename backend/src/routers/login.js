@@ -30,9 +30,9 @@ router.post('/login', (req, res) => {
         return Promise.reject({ status: 401, error: 'Wrong password', username });
       }
       // return JWT to be used
-      return jwt.sign({ username: user.username }, Config.JWT_SECRET_KEY);
+      return [jwt.sign({ username: user.username }, Config.JWT_SECRET_KEY), user];
     })
-    .then(token => res.status(200).send({ token }))
+    .spread((token, user) => res.status(200).send({ token, isAdmin: user.admin }))
     .catch(err => res.status(err.status ? err.status : 500).send({ err }));
 });
 

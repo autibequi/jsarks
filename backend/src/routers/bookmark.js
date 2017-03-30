@@ -18,12 +18,7 @@ router.get('/bookmark', (req, res) => {
   req.getValidationResult()
     .then(Utils.checkValidations)
     .then(() => User.findOne({ username: JWTData.username }).exec())
-    .then((owner) => {
-      if (owner.admin) {
-        return Bookmark.find({});
-      }
-      return Bookmark.find({ owner });
-    })
+    .then(owner => Bookmark.find({ owner }))
     .then(bookmarks => res.status(200).send(bookmarks))
     .catch(err => res.status(err.status ? err.status : 500).send({ err }));
 });

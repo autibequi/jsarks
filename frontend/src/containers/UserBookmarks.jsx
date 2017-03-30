@@ -86,7 +86,6 @@ class App extends React.Component {
             <tr>
               <th>URL</th>
               <th>LINK</th>
-              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -94,7 +93,6 @@ class App extends React.Component {
               <tr>
                 <td>{bookmark.title}</td>
                 <td>{bookmark.url}</td>
-                <td><Button value={bookmark._id} onClick={this.deleteBookmark}>Deletar</Button></td>
               </tr>
             ))}
           </tbody>
